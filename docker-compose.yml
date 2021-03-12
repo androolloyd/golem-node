@@ -1,21 +1,31 @@
-version: '3.5'
-
+version: "3.4"
 services:
-
-  node:
-    container_name: ${COMPOSE_PROJECT_NAME}_node
-    image: aabrioux/golem-node:latest
-    restart: always
+  golem.public.dappnode.eth:
+    build:
+      context: ./build
+      args:
+        YA_CORE_VERSION: 0.6.1
+        YA_WASI_VERSION: 0.2.2
+        YA_VM_VERSION: 0.2.5
+    image: "golem.public.dappnode.eth:0.1.0"
+    restart: unless-stopped
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./data-node/ya-provider/:/root/.local/share/ya-provider/
-      - ./data-node/yagna/:/root/.local/share/yagna/
+      - "/etc/localtime:/etc/localtime:ro"
+      - "node_data/:/root/.local/"
     devices:
-      - /dev/kvm:/dev/kvm
+      - "/dev/kvm:/dev/kvm"
     environment:
-      - YA_PAYMENT_NETWORK=${YA_PAYMENT_NETWORK}
-      - YA_ACCOUNT=${YA_ACCOUNT}
+      - NODE_NAME=arbiter
+      - YA_PAYMENT_NETWORK=mainnet
+      - YA_ACCOUNT=0x185196C8C5Dd5729f22315203E09E33c3f7D7680
+      - YA_CORE_VERSION=0.6.1
+      - YA_WASI_VERSION=0.2.2
+      - YA_VM_VERSION=0.2.5
     labels:
       ofelia.enabled: "true"
       ofelia.job-exec.golem-clean.schedule: "@daily"
-      ofelia.job-exec.golem-clean.command: "find /root/.local/share/ya-provider/exe-unit/cache/ -mtime +7 -type f -exec rm {} +"
+      ofelia.job-exec.golem-clean.command: >-
+        find /root/.local/share/ya-provider/exe-unit/cache/ -mtime +7 -type f
+        -exec rm {} +
+volumes:
+  node_data: {}

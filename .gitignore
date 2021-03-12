@@ -1,2 +1,5 @@
 /.env.local
 /data-node/
+# DAppNodeSDK release directories
+build_*
+.idea/*

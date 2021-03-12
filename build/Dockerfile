@@ -1,7 +1,7 @@
 ARG UBUNTU_VERSION=20.04
-ARG YA_CORE_VERSION=0.6.1
-ARG YA_WASI_VERSION=0.2.2
-ARG YA_VM_VERSION=0.2.5
+ARG YA_CORE_VERSION
+ARG YA_WASI_VERSION
+ARG YA_VM_VERSION
 ARG YA_DIR_BIN=/usr/bin/
 ARG YA_DIR_BIN_TMP=/golem-provider-bin/
 ARG YA_DIR_PLUGINS=/lib/yagna/plugins/
@@ -40,10 +40,7 @@ RUN apt-get update -q \
 && rm -rf /var/lib/apt/lists/*
 COPY --from=installer ${YA_DIR_PLUGINS} ${YA_DIR_PLUGINS}
 COPY --from=installer ${YA_DIR_BIN_TMP} ${YA_DIR_BIN}
+COPY configs/ya-provider/ /root/.local/share/ya-provider/
+COPY docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
 
-CMD ["golemsp", "run"]
-VOLUME ["/root/.local/share/ya-provider/", "/root/.local/share/yagna/"]
-HEALTHCHECK \
-    --interval=1m \
-    --timeout=10s \
-    CMD golemsp status || exit 1
+ENTRYPOINT ["bash","/usr/bin/docker-entrypoint.sh"]

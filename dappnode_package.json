@@ -1,0 +1,34 @@
+{
+  "name": "golem.public.dappnode.eth",
+  "version": "0.1.0",
+  "upstreamVersion": "master",
+  "upstreamRepo": "terra-project/core",
+  "upstreamArg": "UPSTREAM_VERSION",
+  "description": "",
+  "type": "service",
+  "author": "androolloyd <opensource@andrewredden.com> (https://github.com/androolloyd)",
+  "contributors": [
+    "terra-project (https://github.com/terra-project)"
+  ],
+  "categories": [
+    "Developer tools", "Blockchain", "Communications"
+  ],
+  "keywords": [
+    "golem"
+  ],
+  "globalEnvs": {
+    "all": true
+  },
+  "backup": [
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/androolloyd/docker-golem-node"
+  },
+  "links": {
+    "homepage": "https://terra.money",
+    "gateway": "http://chain.golem.public.dappnode:56657",
+    "api": "http://api.golem.public.dappnode:5317"
+  },
+  "license": "GPL v3"
+}
