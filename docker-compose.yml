@@ -1,13 +1,19 @@
 version: "3.4"
 services:
-  golem.public.dappnode.eth:
+  ofelia:
+    image: "mcuadros/ofelia:latest"
+    depends_on:
+      - chain
+    command: daemon --docker
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  chain:
     build:
       context: ./build
       args:
-        YA_CORE_VERSION: 0.6.1
+        YA_CORE_VERSION: v0.6.5
         YA_WASI_VERSION: 0.2.2
         YA_VM_VERSION: 0.2.5
-    image: "golem.public.dappnode.eth:0.1.0"
     restart: unless-stopped
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
@@ -18,14 +24,14 @@ services:
       - NODE_NAME=arbiter
       - YA_PAYMENT_NETWORK=mainnet
       - YA_ACCOUNT=0x185196C8C5Dd5729f22315203E09E33c3f7D7680
-      - YA_CORE_VERSION=0.6.1
-      - YA_WASI_VERSION=0.2.2
-      - YA_VM_VERSION=0.2.5
+      - CPU_SHARED_CORES=
+      - CPU_HOUR_RATE=
     labels:
       ofelia.enabled: "true"
       ofelia.job-exec.golem-clean.schedule: "@daily"
       ofelia.job-exec.golem-clean.command: >-
         find /root/.local/share/ya-provider/exe-unit/cache/ -mtime +7 -type f
         -exec rm {} +
+    image: "chain.golem.public.dappnode.eth:0.1.0"
 volumes:
   node_data: {}

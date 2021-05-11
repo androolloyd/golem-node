@@ -9,4 +9,7 @@ cat > "$PROVIDER_HOME/globals.json" << EOF
   "account": "${YA_ACCOUNT}"
 }
 EOF
-bash -c "golemsp run"
+
+#configure prices
+
+bash -c "golemsp settings set --cpu-per-hour ${CPU_HOUR_RATE:-3} --cores ${CPU_SHARED_CORES:-2} && golemsp run"
