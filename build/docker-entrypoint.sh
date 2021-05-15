@@ -12,4 +12,4 @@ EOF
 
 #configure prices
 
-bash -c "golemsp settings set --cpu-per-hour ${CPU_HOUR_RATE:-3} --cores ${CPU_SHARED_CORES:-2} && golemsp run"
+bash -c "golemsp settings set --cpu-per-hour ${CPU_HOUR_RATE:-0.11} --env-per-hour ${ENV_PER_HOUR_RATE:-0.02} --starting-fee ${START_RATE:-0} --cores ${CPU_SHARED_CORES:-2} && golemsp run"

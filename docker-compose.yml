@@ -11,7 +11,7 @@ services:
     build:
       context: ./build
       args:
-        YA_CORE_VERSION: v0.6.5
+        YA_CORE_VERSION: pre-rel-v0.6.6-rc1
         YA_WASI_VERSION: 0.2.2
         YA_VM_VERSION: 0.2.5
     restart: unless-stopped
@@ -23,15 +23,21 @@ services:
     environment:
       - NODE_NAME=arbiter
       - YA_PAYMENT_NETWORK=mainnet
-      - YA_ACCOUNT=0x185196C8C5Dd5729f22315203E09E33c3f7D7680
-      - CPU_SHARED_CORES=
+      - ENABLE_DYNAMIC_RATE=1
+      - ENV_DISCOUNT_RATE=
+      - YA_ACCOUNT=
       - CPU_HOUR_RATE=
+      - ENV_PER_HOUR_RATE=
+      - CPU_SHARED_CORES=
+      - START_RATE=0
     labels:
       ofelia.enabled: "true"
       ofelia.job-exec.golem-clean.schedule: "@daily"
       ofelia.job-exec.golem-clean.command: >-
         find /root/.local/share/ya-provider/exe-unit/cache/ -mtime +7 -type f
         -exec rm {} +
+      ofelia.job-exec.golem-median.schedule: "@every 10mins"
+      ofelia.job-exec.golem-median.command: /usr/bin/median.sh
     image: "chain.golem.public.dappnode.eth:0.1.0"
 volumes:
   node_data: {}

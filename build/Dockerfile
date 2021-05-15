@@ -35,12 +35,13 @@ ARG YA_DIR_BIN
 ARG YA_DIR_BIN_TMP
 ARG YA_DIR_PLUGINS
 RUN apt-get update -q \
-&& apt-get install -q -y --no-install-recommends ca-certificates \
+&& apt-get install -q -y --no-install-recommends ca-certificates bc jq wget \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/*
 COPY --from=installer ${YA_DIR_PLUGINS} ${YA_DIR_PLUGINS}
 COPY --from=installer ${YA_DIR_BIN_TMP} ${YA_DIR_BIN}
 COPY configs/ya-provider/ /root/.local/share/ya-provider/
 COPY docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
+COPY median.sh /usr/bin/median.sh
 
 ENTRYPOINT ["bash","/usr/bin/docker-entrypoint.sh"]
